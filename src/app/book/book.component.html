@@ -6,7 +6,14 @@
             {{ '::Menu:Books' | abpLocalization }}
           </h5>
         </div>
-        <div class="text-end col col-md-6"></div>
+        <div class="text-end col col-md-6">
+          <div class="text-lg-end pt-2">
+            <button id="create" class="btn btn-primary" type="button" (click)="createBook($event)">
+              <i class="fa fa-plus mr-1"></i>
+              <span>{{ "::NewBook" | abpLocalization }}</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="card-body">
@@ -31,3 +38,17 @@
     </div>
   </div>
   
+  <abp-modal [(visible)]="isModalOpen">
+    <ng-template #abpHeader>
+      <h3>{{ '::NewBook' | abpLocalization }}</h3>
+    </ng-template>
+    <ng-template #abpBody>
+
+    </ng-template>
+
+    <ng-template #abpFooter>
+      <button type="button" class="btn btn-secondary" abpClose>
+        {{ '::Close' | abpLocalization }}
+      </button>
+    </ng-template>
+  </abp-modal>

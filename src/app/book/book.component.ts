@@ -12,6 +12,8 @@ export class BookComponent implements OnInit {
 
   book = {items: [], totalCount: 0 } as PagedResultDto<BookDto>;
 
+  isModalOpen = false;
+
   constructor(public readonly list: ListService, private bookService: BookService) {
    }
 
@@ -21,6 +23,10 @@ export class BookComponent implements OnInit {
     this.list.hookToQuery(bookStreamCreator).subscribe((response) => {
       this.book = response;
     })
+  }
+
+  createBook(e) {
+    this.isModalOpen = true;
   }
 
 }
