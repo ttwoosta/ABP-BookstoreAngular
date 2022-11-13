@@ -10,7 +10,7 @@
           <div class="text-lg-end pt-2">
             <button id="create" class="btn btn-primary" type="button" (click)="createBook($event)">
               <i class="fa fa-plus mr-1"></i>
-              <span>{{ "::NewBook" | abpLocalization }}</span>
+              <span> {{ "::NewBook" | abpLocalization }}</span>
             </button>
           </div>
         </div>
@@ -34,6 +34,31 @@
             {{ row.price | currency }}
           </ng-template>
         </ngx-datatable-column>
+
+            <ngx-datatable-column
+      [name]="'::Actions' | abpLocalization"
+      [maxWidth]="150"
+      [sortable]="false"
+    >
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <div ngbDropdown container="body" class="d-inline-block">
+          <button
+            class="btn btn-primary btn-sm dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            ngbDropdownToggle
+          >
+            <i class="fa fa-cog mr-1"></i>{{ '::Actions' | abpLocalization }}
+          </button>
+          <div ngbDropdownMenu>
+            <button ngbDropdownItem (click)="editBook(row.id)">
+              {{ '::Edit' | abpLocalization }}
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+
       </ngx-datatable>
     </div>
   </div>
@@ -43,12 +68,48 @@
       <h3>{{ '::NewBook' | abpLocalization }}</h3>
     </ng-template>
     <ng-template #abpBody>
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="form-group mb-1">
+          <label for="book-name">Name</label><span> * </span>
+          <input type="text" id="book-name" class="form-control" formControlName="name" autofocus />
+        </div>
+        <div class="form-group mb-1">
+          <label for="book-price">Price</label><span> * </span>
+          <input type="number" id="book-price" class="form-control" formControlName="price" />
+        </div>
+        <div class="form-group mb-1">
+          <label for="book-type">Type</label><span> *</span>
+          <select class="form-control form-select" id="book-type" formControlName="type">
+            <option [ngValue]="null">Select a book type</option>
+            <option [ngValue]="type.value" *ngFor="let type of bookTypes">{{type.key}}</option>
+          </select>
+        </div>
 
+        <div class="form-group mb-1">
+          <label>Publish date</label><span> * </span>
+          <div class="input-group">
+            <input #datepicker="ngbDatepicker" 
+              class="form-control"
+              name="datepicker"
+              formControlName="publishDate"
+              ngbDatepicker
+              (click)="datepicker.toggle()"
+              [(ngModel)]="publishDate"
+            />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button"></button>
+          </div>
+        </div>
+
+      </form>
     </ng-template>
 
     <ng-template #abpFooter>
       <button type="button" class="btn btn-secondary" abpClose>
         {{ '::Close' | abpLocalization }}
+      </button>
+      <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+        <i class="fa fa-check mr-1"></i>
+        {{ '::Save' | abpLocalization }}
       </button>
     </ng-template>
   </abp-modal>

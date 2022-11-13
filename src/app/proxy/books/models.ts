@@ -4,7 +4,7 @@ import type { BookType } from './book-type.enum';
 export interface BookDto extends AuditedEntityDto<string> {
   name?: string;
   type: BookType;
-  publishedDate?: string;
+  publishDate?: string;
   price: number;
 }
 
